@@ -1,0 +1,20 @@
+{
+  "name": "breadth-filter",
+  "version": "1.0.0",
+  "description": "Breadth-first deep object filter",
+  "author": "Stephen Belanger <admin@stephenbelanger.com> (https://github.com/qard)",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test.js"
+  },
+  "keywords": [
+    "breadth",
+    "deep",
+    "object",
+    "filter"
+  ],
+  "devDependencies": {
+    "tap": "^12.1.0"
+  }
+}

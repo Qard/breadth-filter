@@ -120,7 +120,7 @@ tap.test('supports arrays', (t) => {
   t.end()
 })
 
-tap.test('does not mutate', (t) => {
+tap.test('does not mutate by default', (t) => {
   const input = {
     foo: {
       bar: {
@@ -138,6 +138,31 @@ tap.test('does not mutate', (t) => {
         baz: 'buz'
       },
       bux: 'bax'
+    }
+  }
+
+  t.deepEqual(input, expected, 'matches expected output')
+  t.end()
+})
+
+tap.test('mutates in destructive mode', (t) => {
+  const input = {
+    foo: {
+      bar: {
+        baz: 'buz'
+      },
+      bux: 'bax'
+    }
+  }
+
+  breadthFilter(input, reverse, true)
+
+  const expected = {
+    foo: {
+      bar: {
+        baz: 'zub'
+      },
+      bux: 'xab'
     }
   }
 

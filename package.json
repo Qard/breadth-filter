@@ -1,6 +1,6 @@
 {
   "name": "breadth-filter",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Breadth-first deep object filter",
   "author": "Stephen Belanger <admin@stephenbelanger.com> (https://github.com/qard)",
   "license": "MIT",

@@ -1,3 +1,5 @@
+const entries = require('object.entries')
+
 function targetFor (source, destructive) {
   if (Array.isArray(source)) {
     return destructive ? source : []
@@ -15,7 +17,7 @@ module.exports = function breadthFilter (root, fn, destructive) {
 
   while (item = queue.shift()) {
     const [ source, target, path ] = item
-    for (const [ key, value ] of Object.entries(source)) {
+    for (const [ key, value ] of entries(source)) {
       const fieldPath = path.concat(key)
       const newTarget = targetFor(value, destructive)
       if (newTarget) {

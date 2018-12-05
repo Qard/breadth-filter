@@ -16,5 +16,8 @@
   ],
   "devDependencies": {
     "tap": "^12.1.0"
+  },
+  "dependencies": {
+    "object.entries": "^1.0.4"
   }
 }

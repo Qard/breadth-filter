@@ -13,6 +13,7 @@ module.exports = function breadthFilter (root, fn, destructive) {
   if (!target) return root
 
   const queue = [[ root, target, [] ]]
+  const seen = new Set()
   let item
 
   while (item = queue.shift()) {
@@ -21,6 +22,11 @@ module.exports = function breadthFilter (root, fn, destructive) {
       const fieldPath = path.concat(key)
       const newTarget = targetFor(value, destructive)
       if (newTarget) {
+        if (!seen.has(value)) {
+          seen.add(value)
+        } else {
+          continue
+        }
         target[key] = newTarget
         queue.push([ value, target[key], fieldPath ])
       } else {

@@ -169,3 +169,34 @@ tap.test('mutates in destructive mode', (t) => {
   t.deepEqual(input, expected, 'matches expected output')
   t.end()
 })
+
+tap.test('gracefully handle circular references', (t) => {
+  const input = {
+    foo: {
+      bar: {
+        baz: 'buz'
+      },
+      bux: 'bax'
+    }
+  }
+
+  // Form a circular reference
+  input.foo.input = input
+
+  breadthFilter(input, reverse, true)
+
+  const expected = {
+    foo: {
+      bar: {
+        baz: 'zub'
+      },
+      bux: 'xab'
+    }
+  }
+
+  // The expectation also needs a circular reference
+  expected.foo.input = expected
+
+  t.deepEqual(input, expected, 'matches expected output')
+  t.end()
+})

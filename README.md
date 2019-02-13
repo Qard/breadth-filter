@@ -1,5 +1,7 @@
 # breadth-filter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Qard/breadth-filter.svg)](https://greenkeeper.io/)
+
 Apply a deep object filter via breadth traversal.
 
 ## Install

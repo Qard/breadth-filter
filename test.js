@@ -6,6 +6,10 @@ function reverse (input) {
   return input.split('').reverse().join('')
 }
 
+function identity (input) {
+  return input
+}
+
 function whenKeyMatches (expected, fn) {
   return (value, key) => {
     return key === expected ? fn(value) : value
@@ -196,6 +200,32 @@ tap.test('gracefully handle circular references', (t) => {
 
   // The expectation also needs a circular reference
   expected.foo.input = expected
+
+  t.deepEqual(input, expected, 'matches expected output')
+  t.end()
+})
+
+
+tap.test('supports null and undefined values', (t) => {
+  const input = {
+    foo: {
+      bar: {
+        baz: null
+      },
+      bux: undefined
+    }
+  }
+
+  breadthFilter(input, identity)
+
+  const expected = {
+    foo: {
+      bar: {
+        baz: null
+      },
+      bux: undefined
+    }
+  }
 
   t.deepEqual(input, expected, 'matches expected output')
   t.end()

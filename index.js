@@ -3,7 +3,7 @@ const entries = require('object.entries')
 function targetFor (source, destructive) {
   if (Array.isArray(source)) {
     return destructive ? source : []
-  } else if (typeof source === 'object') {
+  } else if (source !== null && typeof source === 'object') {
     return destructive ? source : {}
   }
 }

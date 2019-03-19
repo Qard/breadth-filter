@@ -22,6 +22,14 @@ function whenPathMatches (expected, fn) {
   }
 }
 
+// Mutation handlers
+function onObject (source) {
+  return source
+}
+function onArray (source) {
+  return source
+}
+
 tap.test('basic value mapping', (t) => {
   const input = {
     foo: {
@@ -32,7 +40,9 @@ tap.test('basic value mapping', (t) => {
     }
   }
 
-  const output = breadthFilter(input, reverse)
+  const output = breadthFilter(input, {
+    onValue: reverse
+  })
 
   const expected = {
     foo: {
@@ -60,7 +70,9 @@ tap.test('receives key', (t) => {
     }
   }
 
-  const output = breadthFilter(input, whenKeyMatches('bar', reverse))
+  const output = breadthFilter(input, {
+    onValue: whenKeyMatches('bar', reverse)
+  })
 
   const expected = {
     foo: {
@@ -88,7 +100,9 @@ tap.test('receives path', (t) => {
     }
   }
 
-  const output = breadthFilter(input, whenPathMatches('foo.bar.baz', reverse))
+  const output = breadthFilter(input, {
+    onValue: whenPathMatches('foo.bar.baz', reverse)
+  })
 
   const expected = {
     foo: {
@@ -111,7 +125,9 @@ tap.test('supports arrays', (t) => {
     ]
   }
 
-  const output = breadthFilter(input, whenPathMatches('foo.0.bar', reverse))
+  const output = breadthFilter(input, {
+    onValue: whenPathMatches('foo.0.bar', reverse)
+  })
 
   const expected = {
     foo: [
@@ -134,7 +150,9 @@ tap.test('does not mutate by default', (t) => {
     }
   }
 
-  breadthFilter(input, reverse)
+  breadthFilter(input, {
+    onValue: reverse
+  })
 
   const expected = {
     foo: {
@@ -155,18 +173,22 @@ tap.test('mutates in destructive mode', (t) => {
       bar: {
         baz: 'buz'
       },
-      bux: 'bax'
+      bux: ['bax']
     }
   }
 
-  breadthFilter(input, reverse, true)
+  breadthFilter(input, {
+    onValue: reverse,
+    onObject,
+    onArray
+  })
 
   const expected = {
     foo: {
       bar: {
         baz: 'zub'
       },
-      bux: 'xab'
+      bux: ['xab']
     }
   }
 
@@ -185,23 +207,29 @@ tap.test('gracefully handle circular references', (t) => {
   }
 
   // Form a circular reference
-  input.foo.input = input
+  input.foo.foo = input.foo
+  input.foo.bar.root = input
 
-  breadthFilter(input, reverse, true)
+  const output = breadthFilter(input, {
+    onValue: reverse,
+    onArray,
+    onObject(source, key, path, isNew) {
+      return isNew ? {} : '[Circular]'
+    }
+  })
 
   const expected = {
     foo: {
       bar: {
-        baz: 'zub'
+        baz: 'zub',
+        root: '[Circular]'
       },
-      bux: 'xab'
+      bux: 'xab',
+      foo: '[Circular]'
     }
   }
 
-  // The expectation also needs a circular reference
-  expected.foo.input = expected
-
-  t.deepEqual(input, expected, 'matches expected output')
+  t.deepEqual(output, expected, 'matches expected output')
   t.end()
 })
 
@@ -216,7 +244,11 @@ tap.test('supports null and undefined values', (t) => {
     }
   }
 
-  breadthFilter(input, identity)
+  breadthFilter(input, {
+    onValue: identity,
+    onObject,
+    onArray
+  })
 
   const expected = {
     foo: {

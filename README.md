@@ -49,6 +49,51 @@ breadthFilter(data, {
 })
 ```
 
+## Options
+
+### onValue(value, key, path)
+
+This function handles primitive value types such as numbers or strings. It can be used to filter things like sensitive data such as passwords or credit card numbers.
+
+Arguments:
+
+* `value` - any
+The encountered value to filter.
+* `key` - string | number
+The property key of the encountered value, at the current depth level. Will be `null` when encountering the root object.
+* `path` - array<string>
+Any array of all property keys leading from the root to this encountered value.
+
+### onObject(value, key, path, isNew)
+
+This handles encountered objects. It can be used to filter entire objects out of the result, by returning `undefined`, it can enable in-place mutation by return the value directly, and the `isNew` property can be used to identify and break out of circular references, replacing them with something else such as `'[Circular]'`.
+
+Arguments:
+
+* `value` - any
+The encountered value to filter.
+* `key` - string | number
+The property key of the encountered value, at the current depth level. Will be `null` when encountering the root object.
+* `path` - array<string>
+Any array of all property keys leading from the root to this encountered value.
+* `isNew` - boolean
+Indicates if this is the first time encountering this value, a false value indicates a circular reference.
+
+### onArray(value, key, path, isNew)
+
+This handles encountered arrays. It can be used to filter entire arrays out of the result, by returning `undefined`, it can enable in-place mutation by return the value directly, and the `isNew` property can be used to identify and break out of circular references, replacing them with something else such as `'[Circular]'`.
+
+Arguments:
+
+* `value` - any
+The encountered value to filter.
+* `key` - string | number
+The property key of the encountered value, at the current depth level. Will be `null` when encountering the root object.
+* `path` - array<string>
+Any array of all property keys leading from the root to this encountered value.
+* `isNew` - boolean
+Indicates if this is the first time encountering this value, a false value indicates a circular reference.
+
 ---
 
 ### Copyright (c) 2019 Stephen Belanger

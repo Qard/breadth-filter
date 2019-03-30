@@ -213,7 +213,7 @@ tap.test('gracefully handle circular references', (t) => {
   const output = breadthFilter(input, {
     onValue: reverse,
     onArray,
-    onObject(source, key, path, isNew) {
+    onObject (source, key, path, isNew) {
       return isNew ? {} : '[Circular]'
     }
   })
@@ -232,7 +232,6 @@ tap.test('gracefully handle circular references', (t) => {
   t.deepEqual(output, expected, 'matches expected output')
   t.end()
 })
-
 
 tap.test('supports null and undefined values', (t) => {
   const input = {
@@ -260,5 +259,16 @@ tap.test('supports null and undefined values', (t) => {
   }
 
   t.deepEqual(input, expected, 'matches expected output')
+  t.end()
+})
+
+tap.test('pass through primitives', (t) => {
+  const result = breadthFilter('foo', {
+    onValue: identity,
+    onObject,
+    onArray
+  })
+
+  t.equal(result, 'foo')
   t.end()
 })

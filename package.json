@@ -15,7 +15,7 @@
     "filter"
   ],
   "devDependencies": {
-    "tap": "^12.1.0"
+    "tap": "^14.7.1"
   },
   "dependencies": {
     "object.entries": "^1.0.4"

@@ -13,7 +13,7 @@ npm install breadth-filter
 ## Example
 
 ```js
-const breadthFilter = require('breadth-filter')
+import breadthFilter from 'breadth-filter'
 
 const data = {
   user: {

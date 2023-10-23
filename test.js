@@ -1,6 +1,6 @@
-const tap = require('tap')
+import tap from 'tap'
 
-const breadthFilter = require('./')
+import breadthFilter from './index.js'
 
 function reverse (input) {
   return input.split('').reverse().join('')

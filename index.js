@@ -1,20 +1,14 @@
-const entries = require('object.entries')
+const entries = Object.entries
 
-function defaultOnArray () { return [] }
-function defaultOnObject () { return {} }
-
-function targetFor (source, key, fieldPath, isNew, {
-  onArray = defaultOnArray,
-  onObject = defaultOnObject
-} = {}) {
+function targetFor (source, key, fieldPath, isNew, opts) {
   if (Array.isArray(source)) {
-    return onArray(source, key, fieldPath, isNew)
+    return opts.onArray ? opts.onArray(source, key, fieldPath, isNew) : []
   } else if (source !== null && typeof source === 'object') {
-    return onObject(source, key, fieldPath, isNew)
+    return opts.onObject ? opts.onObject(source, key, fieldPath, isNew) : {}
   }
 }
 
-module.exports = function breadthFilter (root, opts = {}) {
+function breadthFilter (root, opts = {}) {
   const { onValue } = opts
   const target = targetFor(root, null, [], true, opts)
   if (!target) return root
@@ -44,3 +38,5 @@ module.exports = function breadthFilter (root, opts = {}) {
 
   return target
 }
+
+export default breadthFilter

@@ -1,5 +1,3 @@
-const entries = require('object.entries')
-
 function defaultOnArray () { return [] }
 function defaultOnObject () { return {} }
 
@@ -25,7 +23,7 @@ module.exports = function breadthFilter (root, opts = {}) {
 
   while (item = queue.shift()) {
     const [ source, target, path ] = item
-    for (const [ key, value ] of entries(source)) {
+    for (const [ key, value ] of Object.entries(source)) {
       const fieldPath = path.concat(key)
       const isNew = !seen.has(value)
       if (isNew) seen.add(value)
